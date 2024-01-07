@@ -2,9 +2,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const User = require('./models/User.js');  
 const bcrypt = require('bcrypt'); 
-const jwt = require('jsonwebtoken');
 
-const secret = 'this is my secret';
 
 const app = express(); 
 
@@ -41,16 +39,7 @@ app.post('/register', async (req, res) => {
 
 
 app.get('/profile', (req, res) => {
-    const token = req.headers.authorization;
-    try {
-        const payload = jwt.verify(token, secret);
-        res.send(`${payload.username}'s profile`);
-    } catch(err) {
-        console.log(err);
-        // Invalid token or no token
-        res.send("Invalid token");
-    }
-
+    res.send("User's profile");
 })
 
 
@@ -69,11 +58,8 @@ app.post('/login', async (req, res) => {
         return; 
     }
 
-    const token = jwt.sign({ username: account.username }, secret);
-
     res.send({
         msg: "Login succesful",
-        token
     })
 
 })
